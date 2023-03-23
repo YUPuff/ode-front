@@ -18,3 +18,8 @@ export function validUsername(str) {
   const valid_map = ['admin', 'editor']
   return valid_map.indexOf(str.trim()) >= 0
 }
+
+// 验证字符串是否是数值
+export function isNumber(str) {
+  return !isNaN(parseFloat(str)) && isFinite(str)
+}

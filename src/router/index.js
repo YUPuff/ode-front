@@ -34,7 +34,7 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'), // @指的是src目录
-    hidden: true   // 设置为true意味着此项不会出现在侧边栏，默认为false
+    hidden: true // 设置为true意味着此项不会出现在侧边栏，默认为false
   },
 
   {
@@ -55,20 +55,34 @@ export const constantRoutes = [
     }]
   },
 
+  // 菜品管理
   {
-    path: '/example',
+    path: '/dish',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    
+    redirect: '/dish/list',
+    name: 'Dishes',
+    meta: { title: '菜品管理', icon: 'el-icon-s-help' },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
-        path: 'dishes',
-        name: 'dishes',
+        path: 'list',
+        name: 'list',
         component: () => import('@/views/dishes/index'),
-        meta: { title: '菜品管理', icon: 'dish' }
+        meta: { title: '菜品列表', icon: 'dish' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        hidden: true,
+        component: () => import('@/views/dishes/edit'),
+        meta: { title: '编辑菜品', icon: 'dish' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        hidden: true,
+        component: () => import('@/views/dishes/add'),
+        meta: { title: '添加菜品', icon: 'dish' }
       }
     ]
   },
@@ -85,7 +99,6 @@ export const constantRoutes = [
       }
     ]
   },
-  
 
   {
     path: '/nested',
