@@ -61,7 +61,7 @@
     </el-table>
 
     <!--分页-->
-    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getDishes" /> -->
+    <pagination v-show="total>0" :total="total" :page.sync="listForm.pageNum" :limit.sync="listForm.pageSize" @pagination="fetchData" />
     <!--对话框-->
     <el-dialog
       title="提示"
@@ -79,8 +79,10 @@
 <script>
 import { getDishes, deleteDish } from '@/api/dish'
 import { getTypes } from '@/api/type'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
+  components: { Pagination },
   data() {
     return {
       // 菜品列表
@@ -105,7 +107,8 @@ export default {
         sort: '+id'
       },
       dialogVisible: false,
-      deleteId: []
+      deleteId: [],
+      total: 0
     }
   },
   created() {
@@ -117,6 +120,7 @@ export default {
       this.listLoading = true
       getDishes(this.listForm).then(response => {
         this.list = response.data.list
+        this.total = response.data.totalNum
         this.listLoading = false
       })
       getTypes({ pageNum: 1, pageSize: 20 }).then(response => {
