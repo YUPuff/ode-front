@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!--搜索框-->
-    <div class="filter-container">
+    <div class="filter-container" style="margin-bottom: 30px;">
       菜品名
       <el-input v-model="listForm.name" placeholder="菜品名" style="width: 200px;margin-right: 30px;" class="filter-item" />
       价格

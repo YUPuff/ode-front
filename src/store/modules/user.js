@@ -6,12 +6,14 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    role: ''
   }
 }
 
 const state = getDefaultState()
 
+// 定义改变state初始值的方法，此处是唯一能够改变state值的地方
 const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
@@ -24,6 +26,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   }
 }
 
@@ -36,6 +41,9 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
+        commit('SET_NAME', data.name)
+        commit('SET_AVATAR', data.pic)
+        commit('SET_ROLE', data.role)
         setToken(data.token)
         resolve()
       }).catch(error => {
