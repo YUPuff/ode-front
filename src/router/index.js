@@ -38,6 +38,12 @@ export const constantRoutes = [
   },
 
   {
+    path: '/register',
+    component: () => import('@/views/register/index'),
+    hidden: true // 设置为true意味着此项不会出现在侧边栏，默认为false
+  },
+
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -55,6 +61,31 @@ export const constantRoutes = [
     }]
   },
 
+  // 人员管理
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/list',
+    name: 'admin',
+    meta: { title: '人员管理', icon: 'el-icon-s-help' },
+    // 当children数大于1时，自动变为嵌套模式
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/admin/index'),
+        meta: { title: '人员管理', icon: 'peoples' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        hidden: true,
+        component: () => import('@/views/admin/edit'),
+        meta: { title: '编辑', icon: 'peoples' }
+      }
+    ]
+  },
+
   // 菜品管理
   {
     path: '/dish',
@@ -68,7 +99,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'list',
         component: () => import('@/views/dishes/index'),
-        meta: { title: '菜品列表', icon: 'dish' }
+        meta: { title: '菜品管理', icon: 'dish' }
       },
       {
         path: 'edit/:id',

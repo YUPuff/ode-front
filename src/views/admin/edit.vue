@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="图片">
+      <el-form-item label="头像">
         <el-upload
           class="avatar-uploader"
           :action="uploadURL"
@@ -11,26 +11,27 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
-          <img v-if="form.pic" :src="form.pic" class="avatar" width="400" height="300"/>
+          <img v-if="form.pic" :src="form.pic" class="avatar" width="240" height="240"/>
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           <div slot="tip" class="el-upload__tip">建议尺寸：200*100px</div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="菜品名">
+      <el-form-item label="用户名">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="价格">
-        <el-input v-model="form.price" />
+      <el-form-item label="角色">
+        <el-select v-model="form.role" placeholder="请选择">
+          <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="简介">
-        <el-input v-model="form.intro" />
+      <el-form-item label="是否生效">
+        <el-select v-model="form.isVal" placeholder="请选择">
+          <el-option v-for="(item,index) in binList" :key="index" :label="item.name" :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="详细介绍">
-        <el-input v-model="form.detail" type="textarea" />
-      </el-form-item>
-      <el-form-item label="类型">
-        <el-select v-model="form.type" placeholder="请选择类型">
-          <el-option v-for="(item,index) in typeList" :key="index" :label="item.name" :value="item.id"></el-option>
+      <el-form-item label="是否锁定">
+        <el-select v-model="form.isLock" placeholder="请选择">
+          <el-option v-for="(item,index) in binList" :key="index" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -42,21 +43,21 @@
 </template>
 
 <script>
-import { addDish } from '@/api/dish'
-import { getTypes } from '@/api/type'
+import { getAdminById, updateAdmin } from '@/api/admin'
 
 export default {
   data() {
     return {
       form: {
         name: '',
-        pic: '',
+        password: '',
         price: '',
         intro: '',
         detail: '',
         type: ''
       },
-      typeList: [],
+      roleList: [{ id: 0, name: '管理员' }, { id: 1, name: '服务员' }, { id: 2, name: '后厨' }],
+      binList: [{ id: 0, name: '否' }, { id: 1, name: '是' }],
       fileData: { // 接口需要的额外参数
         category: 12
       },
@@ -72,20 +73,21 @@ export default {
   },
   methods: {
     onSubmit() {
-      addDish(this.form).then(response => {
+      updateAdmin(this.form).then(response => {
         this.$message({
           message: response.message
         })
-        this.$router.push('/dish/list')
+        this.$router.push('/admin/list')
       })
     },
     onCancel() {
-      this.$router.push('/dish/list')
+      this.$router.push('/admin/list')
     },
     // 获取菜品信息和类目信息
     fetchData() {
-      getTypes({ pageNum: 1, pageSize: 20 }).then(response => {
-        this.typeList = response.data.list
+      var id = this.$route.params.id
+      getAdminById(id).then(response => {
+        this.form = response.data
       })
     },
     // 图片上传成功的操作

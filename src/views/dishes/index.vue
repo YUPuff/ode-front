@@ -3,14 +3,14 @@
     <!--搜索框-->
     <div class="filter-container" style="margin-bottom: 30px;">
       菜品名
-      <el-input v-model="listForm.name" placeholder="菜品名" style="width: 200px;margin-right: 30px;" class="filter-item" />
+      <el-input v-model="listForm.name" style="width: 200px;margin-right: 30px;" class="filter-item" />
       价格
       <el-input v-model="listForm.minPrice" placeholder="最低价格" style="width: 200px;" class="filter-item" />
       -
       <el-input v-model="listForm.maxPrice" placeholder="最高价格" style="width: 200px;margin-right: 30px;" class="filter-item" />
       分类
-      <el-select v-model="listForm.type" placeholder="分类" clearable style="width: 90px;margin-right: 30px;" class="filter-item">
-        <el-option v-for="item in typeList" :key="item" :label="item.name" :value="item.number" />
+      <el-select v-model="listForm.type" placeholder="全部" clearable style="width: 90px;margin-right: 30px;" class="filter-item">
+        <el-option v-for="item in typeList" :key="item" :label="item.name" :value="item.id" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">
         搜索
@@ -98,14 +98,6 @@ export default {
         pageSize: 10
       },
       typeList: [],
-      listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
-      },
       dialogVisible: false,
       deleteId: [],
       total: 0

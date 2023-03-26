@@ -30,7 +30,7 @@
       </el-form-item>
       <el-form-item label="类型">
         <el-select v-model="form.type" placeholder="请选择类型">
-          <el-option v-for="(item,index) in typeList" :key="index" :label="item.name" :value="item.number"></el-option>
+          <el-option v-for="(item,index) in typeList" :key="index" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -72,12 +72,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      updateDish(this.form).then(response => {
-        this.$message({
-          message: response.message
+      var isNumber = !isNaN(parseFloat(this.form.price)) && isFinite(this.form.price)
+      console.log(isNumber)
+      if (isNumber) {
+        updateDish(this.form).then(response => {
+          this.$message({
+            message: response.message
+          })
+          this.$router.push('/dish/list')
         })
-        this.$router.push('/dish/list')
-      })
+      } else {
+        this.$message.error('价格只能是数字')
+      }
     },
     onCancel() {
       this.$router.push('/dish/list')

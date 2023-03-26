@@ -49,7 +49,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { setToken } from '@/utils/auth'
 
 export default {
   name: 'Login',
