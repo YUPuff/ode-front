@@ -74,14 +74,14 @@ export const constantRoutes = [
         path: 'list',
         name: 'list',
         component: () => import('@/views/admin/index'),
-        meta: { title: '人员管理', icon: 'peoples' }
+        meta: { title: '人员列表', icon: 'peoples' }
       },
       {
         path: 'edit/:id',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/admin/edit'),
-        meta: { title: '编辑', icon: 'peoples' }
+        meta: { title: '编辑' }
       }
     ]
   },
@@ -99,21 +99,64 @@ export const constantRoutes = [
         path: 'list',
         name: 'list',
         component: () => import('@/views/dishes/index'),
-        meta: { title: '菜品管理', icon: 'dish' }
+        meta: { title: '菜品列表', icon: 'dish' }
       },
       {
         path: 'edit/:id',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/dishes/edit'),
-        meta: { title: '编辑菜品', icon: 'dish' }
+        meta: { title: '编辑', icon: 'dish' }
       },
       {
         path: 'add',
         name: 'add',
         hidden: true,
         component: () => import('@/views/dishes/add'),
-        meta: { title: '添加菜品', icon: 'dish' }
+        meta: { title: '添加', icon: 'dish' }
+      }
+    ]
+  },
+
+  // 分类管理
+  {
+    path: '/type',
+    component: Layout,
+    redirect: '/type/list',
+    name: 'type',
+    meta: { title: '分类管理', icon: 'list' },
+    // 当children数大于1时，自动变为嵌套模式
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/type/index'),
+        meta: { title: '分类列表', icon: 'list' }
+      }
+    ]
+  },
+
+  // 订单管理
+  {
+    path: '/order',
+    component: Layout,
+    redirect: '/order/list',
+    name: 'Dishes',
+    meta: { title: '订单管理' },
+    // 当children数大于1时，自动变为嵌套模式
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/order/index'),
+        meta: { title: '订单列表', icon: 'skill' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'detail',
+        hidden: true,
+        component: () => import('@/views/order/detail'),
+        meta: { title: '详情' }
       }
     ]
   },
