@@ -80,6 +80,7 @@
 import { getDishes, deleteDish } from '@/api/dish'
 import { getTypes } from '@/api/type'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { isNumber, isNotSeq } from '@/utils/validate'
 
 export default {
   components: { Pagination },
@@ -91,8 +92,8 @@ export default {
       listLoading: true,
       listForm: {
         name: null,
-        minPrice: null,
-        maxPrice: null,
+        minPrice: '',
+        maxPrice: '',
         type: null,
         pageNum: 1,
         pageSize: 10
@@ -110,14 +111,24 @@ export default {
     // 获取菜品列表
     fetchData() {
       this.listLoading = true
-      getDishes(this.listForm).then(response => {
-        this.list = response.data.list
-        this.total = response.data.totalNum
-        this.listLoading = false
-      })
-      getTypes({ pageNum: 1, pageSize: 20 }).then(response => {
-        this.typeList = response.data.list
-      })
+      var min = this.listForm.minPrice
+      var max = this.listForm.maxPrice
+      if (isNumber(min) && isNumber(max)) {
+        if (!isNotSeq(min, max)) {
+          getDishes(this.listForm).then(response => {
+            this.list = response.data.list
+            this.total = response.data.totalNum
+            this.listLoading = false
+          })
+          getTypes({ pageNum: 1, pageSize: 20 }).then(response => {
+            this.typeList = response.data.list
+          })
+        } else {
+          this.$message.error('最高价格不能低于最低价格')
+        }
+      } else {
+        this.$message.error('价格只能是数字')
+      }
     },
     // 跳转到编辑页
     handleUpdate(id) {

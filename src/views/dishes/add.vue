@@ -72,12 +72,17 @@ export default {
   },
   methods: {
     onSubmit() {
-      addDish(this.form).then(response => {
-        this.$message({
-          message: response.message
+      var isNumber = this.form.price === '' || (!isNaN(parseFloat(this.form.price)) && isFinite(this.form.price))
+      if (isNumber) {
+        addDish(this.form).then(response => {
+          this.$message({
+            message: response.message
+          })
+          this.$router.push('/dish/list')
         })
-        this.$router.push('/dish/list')
-      })
+      } else {
+        this.$message.error('价格只能是数字')
+      }
     },
     onCancel() {
       this.$router.push('/dish/list')

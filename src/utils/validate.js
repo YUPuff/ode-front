@@ -19,3 +19,10 @@ export function validUsername(str) {
   return valid_map.indexOf(str.trim()) >= 0
 }
 
+export function isNumber(str) {
+  return str === '' || (!isNaN(parseFloat(str)) && isFinite(str))
+}
+
+export function isNotSeq(min, max) {
+  return min !== '' && max !== '' && min > max
+}

@@ -20,6 +20,7 @@
       起止时间
       <el-date-picker
         v-model="listForm.start"
+        value-format="MM/dd/yyyy HH:mm:ss"
         type="datetime"
         placeholder="起始时间"
         align="right"
@@ -27,6 +28,7 @@
       -
       <el-date-picker
         v-model="listForm.end"
+        value-format="MM/dd/yyyy HH:mm:ss"
         type="datetime"
         placeholder="结束时间"
         align="right"
@@ -68,7 +70,7 @@
       </el-table-column>
       <el-table-column label="创建时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.addTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.addTime | dateFormat }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
@@ -102,6 +104,7 @@
 <script>
 import { getOrders, cancelOrder } from '@/api/order'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { isNumber, isNotSeq } from '@/utils/validate'
 
 export default {
   components: { Pagination },
@@ -137,8 +140,8 @@ export default {
         id: null,
         tableId: null,
         status: null,
-        minTotal: null,
-        maxTotal: null,
+        minTotal: '',
+        maxTotal: '',
         start: null,
         end: null,
         pageNum: 1,
@@ -162,11 +165,27 @@ export default {
     // 获取列表
     fetchData() {
       this.listLoading = true
-      getOrders(this.listForm).then(response => {
-        this.list = response.data.list
-        this.total = response.data.totalNum
-        this.listLoading = false
-      })
+      var minT = this.listForm.minTotal
+      var maxT = this.listForm.maxTotal
+      var minD = this.listForm.start
+      var maxD = this.listForm.end
+      if (isNumber(minT) && isNumber(maxT)) {
+        if (isNotSeq(minT, maxT)) {
+          this.$message.error('最高金额不能低于最低金额')
+        } else {
+          if (isNotSeq(minD, maxD)) {
+            this.$message.error('结束时间不能早于起始时间')
+          } else {
+            getOrders(this.listForm).then(response => {
+              this.list = response.data.list
+              this.total = response.data.totalNum
+              this.listLoading = false
+            })
+          }
+        }
+      } else {
+        this.$message.error('金额只能是数字')
+      }
     },
     // 跳转到详情页
     handleUpdate(id) {
