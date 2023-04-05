@@ -48,6 +48,13 @@
           {{ scope.row.intro }}
         </template>
       </el-table-column>
+      <el-table-column label="评价">
+        <template slot-scope="scope">
+          <el-tag type="success" style="margin-right: 30px;">好：{{ scope.row.comments['good'] }}</el-tag>
+          <el-tag type="info" style="margin-right: 30px;">中：{{ scope.row.comments['mid'] }}</el-tag>
+          <el-tag type="danger">差：{{ scope.row.comments['bad'] }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row.id)">

@@ -39,3 +39,9 @@ export function deleteDish(data) {
   })
 }
 
+export function cancelDish(param) {
+  return request({
+    url: '/orderDish/cancel/' + param,
+    method: 'get'
+  })
+}
