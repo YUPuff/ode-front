@@ -124,14 +124,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/type/list',
     name: 'type',
-    meta: { title: '分类管理', icon: 'list' },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/type/index'),
-        meta: { title: '分类列表', icon: 'list' }
+        meta: { title: '分类管理', icon: 'list' }
       }
     ]
   },
@@ -167,7 +166,6 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/comment/list',
     name: 'Comment',
-    meta: { title: '评论管理' },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
@@ -175,6 +173,22 @@ export const constantRoutes = [
         name: 'list',
         component: () => import('@/views/comment/index'),
         meta: { title: '评论管理', icon: 'edit' }
+      }
+    ]
+  },
+
+  // 营业统计
+  {
+    path: '/statistics',
+    component: Layout,
+    redirect: '/statistics',
+    name: 'Statistics',
+    children: [
+      {
+        path: '',
+        name: '',
+        component: () => import('@/views/statistics/index'),
+        meta: { title: '营业统计', icon: 'chart' }
       }
     ]
   },

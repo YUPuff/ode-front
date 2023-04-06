@@ -44,7 +44,7 @@
           <el-tag v-if="scope.row.role != null" :type="scope.row.role | statusFilter">
             {{ scope.row.role | roleFilter }}
           </el-tag>
-          <el-tag v-else>
+          <el-tag v-else type="info">
             待审核
           </el-tag>
         </template>

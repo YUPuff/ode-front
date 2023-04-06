@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm"  class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="rules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">江安大饭店</h3>
+        <h3 class="title">ODE-登录</h3>
       </div>
 
       <el-form-item prop="username">
@@ -42,7 +42,7 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-      <el-button :loading="loading" style="width:50%;margin-bottom:30px;" @click.native.prevent="handleRegister">注册新账号</el-button>
+      <el-button style="width:50%;margin-bottom:30px;" @click.native.prevent="handleRegister">注册新账号</el-button>
     </el-form>
   </div>
 </template>
@@ -59,7 +59,14 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      rules: {
+        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {
@@ -82,13 +89,23 @@ export default {
       })
     },
     handleLogin() {
-      this.loading = true
-      // 触发axios，寻找user模块中action（src/store/modules/user.js）
-      this.$store.dispatch('user/login', this.loginForm).then(() => {
-        this.$router.push({ path: this.redirect || '/' })
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
+      // 前端校验通过后才能向后端发送请求
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          // 触发axios，寻找user模块中action（src/store/modules/user.js）
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     handleRegister() {
