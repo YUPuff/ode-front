@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="rules" class="login-form" auto-complete="on" label-position="left">
-
+      <el-avatar style="width:100px;height: 100px;margin: 20px;margin-left: 180px;" src="https://s1.chu0.com/src/img/png/09/09867b24874e48ce8954b0d691282e6e.png?imageMogr2/auto-orient/thumbnail/!132x132r/gravity/Center/crop/132x132/quality/85/&e=1735488000&token=1srnZGLKZ0Aqlz6dk7yF4SkiYf4eP-YrEOdM1sob:VZv00aTgOcARJzn20J8q7P9qSiU=" size="large" ></el-avatar>
       <div class="title-container">
         <h3 class="title">ODE-登录</h3>
       </div>
@@ -20,7 +20,6 @@
           auto-complete="on"
         />
       </el-form-item>
-
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />

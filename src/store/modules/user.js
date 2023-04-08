@@ -7,7 +7,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    role: ''
+    role: '',
+    id: ''
   }
 }
 
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -40,6 +44,7 @@ const actions = {
       // 调用api/user中的login方法，不是递归
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
+        commit('SET_ID', data.id)
         commit('SET_TOKEN', data.token)
         commit('SET_NAME', data.name)
         commit('SET_AVATAR', data.pic)
@@ -62,9 +67,11 @@ const actions = {
           return reject('验证已失效，请重新登录！')
         }
 
-        const { name, pic } = data
+        const { id, name, pic, role } = data
+        commit('SET_ID', id)
         commit('SET_NAME', name)
         commit('SET_AVATAR', pic)
+        commit('SET_ROLE', role)
         resolve(data)
       }).catch(error => {
         reject(error)

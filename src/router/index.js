@@ -50,6 +50,12 @@ export const constantRoutes = [
   },
 
   {
+    path: '/401',
+    component: () => import('@/views/401'),
+    hidden: true
+  },
+
+  {
     path: '/',
     component: Layout,
     redirect: '/index',
@@ -59,29 +65,34 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '后台管理系统', icon: 'dashboard' }
     }]
-  },
+  }
 
+  // 404 page must be placed at the end !!!
+  // { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRouterMap = [
   // 人员管理
   {
     path: '/admin',
     component: Layout,
     redirect: '/admin/list',
     name: 'admin',
-    meta: { title: '人员管理', icon: 'el-icon-s-help' },
+    meta: { title: '人员管理', icon: 'el-icon-s-help', role: ['admin'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/admin/index'),
-        meta: { title: '人员列表', icon: 'peoples' }
+        meta: { title: '人员列表', icon: 'peoples', role: ['admin'] }
       },
       {
         path: 'edit/:id',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/admin/edit'),
-        meta: { title: '编辑' }
+        meta: { title: '编辑', role: ['admin'] }
       }
     ]
   },
@@ -92,7 +103,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/dish/list',
     name: 'Dishes',
-    meta: { title: '菜品管理', icon: 'el-icon-s-help' },
+    meta: { title: '菜品管理', role: ['admin'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
@@ -124,13 +135,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/type/list',
     name: 'type',
-    // 当children数大于1时，自动变为嵌套模式
+    meta: { title: '分类管理', role: ['admin'] },
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/type/index'),
-        meta: { title: '分类管理', icon: 'list' }
+        meta: { title: '分类列表', icon: 'list' }
       }
     ]
   },
@@ -141,21 +152,21 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/order/list',
     name: 'Dishes',
-    meta: { title: '订单管理' },
+    meta: { title: '订单管理', role: ['admin', 'waiter'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/order/index'),
-        meta: { title: '订单列表', icon: 'skill' }
+        meta: { title: '订单列表', icon: 'skill', role: ['admin', 'waiter'] }
       },
       {
         path: 'detail/:id',
         name: 'detail',
         hidden: true,
         component: () => import('@/views/order/detail'),
-        meta: { title: '详情' }
+        meta: { title: '详情', role: ['admin', 'waiter'] }
       }
     ]
   },
@@ -166,7 +177,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/comment/list',
     name: 'Comment',
-    // 当children数大于1时，自动变为嵌套模式
+    meta: { title: '评论管理', role: ['admin'] },
     children: [
       {
         path: 'list',
@@ -183,6 +194,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/statistics',
     name: 'Statistics',
+    meta: { title: '营业统计', role: ['admin'] },
     children: [
       {
         path: '',
@@ -192,36 +204,6 @@ export const constantRoutes = [
       }
     ]
   },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  }
-
-  // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
-]
-
-export const asyncRouterMap = [
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

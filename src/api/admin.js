@@ -31,3 +31,16 @@ export function deleteAdmin(data) {
   })
 }
 
+export function getStatistics() {
+  return request({
+    url: '/admin/statistics',
+    method: 'get'
+  })
+}
+
+export function getDays(param) {
+  return request({
+    url: '/admin/index/' + param,
+    method: 'get'
+  })
+}

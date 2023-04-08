@@ -31,3 +31,9 @@ export function cancelOrder(param) {
   })
 }
 
+export function getHotDishes() {
+  return request({
+    url: '/orderDish/getTop5Dishes',
+    method: 'get'
+  })
+}
