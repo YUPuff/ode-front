@@ -192,7 +192,6 @@ export default {
     handleUpdate(id) {
       getDishById(id).then(response => {
         this.temp = response.data
-        console.log(this.temp)
         this.dialogFormVisible = true
       })
     },

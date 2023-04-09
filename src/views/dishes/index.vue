@@ -57,10 +57,11 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.id)">
+          <el-button type="primary" size="mini" @click="seeDetail(scope.row.id)">查看</el-button>
+          <el-button v-if="role === 0" type="warning" size="mini" @click="handleUpdate(scope.row.id)">
             编辑
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete1(scope.row.id)">
+          <el-button v-if="role === 0" size="mini" type="danger" @click="handleDelete1(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -80,17 +81,46 @@
         <el-button type="primary" @click="handleDelete2">确 定</el-button>
       </span>
     </el-dialog>
+    <!--查看详情对话框-->
+    <el-dialog :visible.sync="dialogFormVisible">
+      <el-form :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="图片" prop="pic">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="temp.pic"
+            fit="fill"/>
+        </el-form-item>
+        <el-form-item label="菜品名" prop="name">
+          {{temp.name}}
+        </el-form-item>
+        <el-form-item label="价格" prop="name">
+          {{temp.price}}
+        </el-form-item>
+        <el-form-item label="简介" prop="name">
+          {{temp.intro}}
+        </el-form-item>
+        <el-form-item label="详细介绍" prop="name">
+          {{temp.detail}}
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getDishes, deleteDish } from '@/api/dish'
+import { getDishes, deleteDish, getDishById } from '@/api/dish'
 import { getTypes } from '@/api/type'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { isNumber, isNotSeq } from '@/utils/validate'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { Pagination },
+  computed: {
+    ...mapGetters([
+      'role'
+    ])
+  },
   data() {
     return {
       // 菜品列表
@@ -108,7 +138,9 @@ export default {
       typeList: [],
       dialogVisible: false,
       deleteId: [],
-      total: 0
+      total: 0,
+      dialogFormVisible: false,
+      temp: {}
     }
   },
   created() {
@@ -136,6 +168,12 @@ export default {
       } else {
         this.$message.error('价格只能是数字')
       }
+    },
+    seeDetail(id) {
+      getDishById(id).then(response => {
+        this.temp = response.data
+        this.dialogFormVisible = true
+      })
     },
     // 跳转到编辑页
     handleUpdate(id) {

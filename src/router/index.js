@@ -63,7 +63,7 @@ export const constantRoutes = [
       path: 'index',
       name: 'index',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '后台管理系统', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   }
 
@@ -72,27 +72,45 @@ export const constantRoutes = [
 ]
 
 export const asyncRouterMap = [
+
+  // 待处理订单
+  {
+    path: '/todo',
+    component: Layout,
+    redirect: '/todo/list',
+    name: 'todo',
+    meta: { role: ['admin', 'waiter', 'cook'] },
+    // 当children数大于1时，自动变为嵌套模式
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/todo/index'),
+        meta: { title: '待处理订单', icon: 'education', role: ['admin', 'waiter', 'cook'] }
+      }
+    ]
+  },
   // 人员管理
   {
     path: '/admin',
     component: Layout,
     redirect: '/admin/list',
     name: 'admin',
-    meta: { title: '人员管理', icon: 'el-icon-s-help', role: ['admin'] },
+    meta: { role: ['admin'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/admin/index'),
-        meta: { title: '人员列表', icon: 'peoples', role: ['admin'] }
+        meta: { title: '人员管理', icon: 'peoples', role: ['admin'] }
       },
       {
         path: 'edit/:id',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/admin/edit'),
-        meta: { title: '编辑', role: ['admin'] }
+        meta: { title: '编辑人员', role: ['admin'] }
       }
     ]
   },
@@ -103,28 +121,28 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/dish/list',
     name: 'Dishes',
-    meta: { title: '菜品管理', role: ['admin'] },
+    meta: { role: ['admin', 'waiter'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/dishes/index'),
-        meta: { title: '菜品列表', icon: 'dish' }
+        meta: { title: '菜品管理', icon: 'dish', role: ['admin', 'waiter'] }
       },
       {
         path: 'edit/:id',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/dishes/edit'),
-        meta: { title: '编辑', icon: 'dish' }
+        meta: { title: '编辑菜品', icon: 'dish', role: ['admin'] }
       },
       {
         path: 'add',
         name: 'add',
         hidden: true,
         component: () => import('@/views/dishes/add'),
-        meta: { title: '添加', icon: 'dish' }
+        meta: { title: '添加菜品', icon: 'dish', role: ['admin'] }
       }
     ]
   },
@@ -135,13 +153,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/type/list',
     name: 'type',
-    meta: { title: '分类管理', role: ['admin'] },
+    meta: { role: ['admin'] },
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/type/index'),
-        meta: { title: '分类列表', icon: 'list' }
+        meta: { title: '分类管理', icon: 'list', role: ['admin'] }
       }
     ]
   },
@@ -152,21 +170,21 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/order/list',
     name: 'Dishes',
-    meta: { title: '订单管理', role: ['admin', 'waiter'] },
+    meta: { role: ['admin', 'waiter'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/order/index'),
-        meta: { title: '订单列表', icon: 'skill', role: ['admin', 'waiter'] }
+        meta: { title: '订单管理', icon: 'skill', role: ['admin', 'waiter'] }
       },
       {
         path: 'detail/:id',
         name: 'detail',
         hidden: true,
         component: () => import('@/views/order/detail'),
-        meta: { title: '详情', role: ['admin', 'waiter'] }
+        meta: { title: '订单详情', role: ['admin', 'waiter'] }
       }
     ]
   },
@@ -177,13 +195,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/comment/list',
     name: 'Comment',
-    meta: { title: '评论管理', role: ['admin'] },
+    meta: { role: ['admin'] },
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/comment/index'),
-        meta: { title: '评论管理', icon: 'edit' }
+        meta: { title: '评论管理', icon: 'edit', role: ['admin'] }
       }
     ]
   },
@@ -194,13 +212,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/statistics',
     name: 'Statistics',
-    meta: { title: '营业统计', role: ['admin'] },
+    meta: { role: ['admin'] },
     children: [
       {
         path: '',
         name: '',
         component: () => import('@/views/statistics/index'),
-        meta: { title: '营业统计', icon: 'chart' }
+        meta: { title: '营业统计', icon: 'chart', role: ['admin'] }
       }
     ]
   },

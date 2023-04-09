@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎您: {{ name }}</div>
+    <div class="dashboard-text">欢迎您: {{ role | roleFilter }}-{{ name }}</div>
     <el-row :gutter="20" style="margin-bottom: 40px;">
       <el-col :span="8" style="margin: 20px;">
         <el-card>
@@ -47,7 +47,16 @@ export default {
       'role'
     ])
   },
-  // eslint-disable-next-line vue/order-in-components
+  filters: {
+    roleFilter(status) {
+      const statusMap = {
+        0: '管理员',
+        1: '服务员',
+        2: '后厨'
+      }
+      return statusMap[status]
+    }
+  },
   data() {
     return {
       day: 0,
@@ -76,7 +85,7 @@ export default {
       })
     },
     gotoOrder() {
-      this.$router.push('/order/list')
+      this.$router.push('/todo/list')
     },
     gotoPeople() {
       this.$router.push('/admin/list')
@@ -91,7 +100,8 @@ export default {
     margin: 30px;
   }
   &-text {
-    font-size: 30px;
+    font-size: xx-large;
+    font-weight: bold;
     line-height: 46px;
   }
 }

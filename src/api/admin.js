@@ -1,7 +1,11 @@
 import request from '@/utils/request'
+import { getToken } from '@/utils/auth'
+
+const token = getToken()
 
 export function getAdmins(params) {
   return request({
+    headers: { 'token': token },
     url: '/admin/get',
     method: 'get',
     params
@@ -10,6 +14,7 @@ export function getAdmins(params) {
 
 export function getAdminById(param) {
   return request({
+    headers: { 'token': token },
     url: '/admin/detail/' + param,
     method: 'get'
   })
@@ -17,6 +22,7 @@ export function getAdminById(param) {
 
 export function updateAdmin(data) {
   return request({
+    headers: { 'token': token },
     url: '/admin/upd',
     method: 'post',
     data
@@ -25,6 +31,7 @@ export function updateAdmin(data) {
 
 export function deleteAdmin(data) {
   return request({
+    headers: { 'token': token },
     url: '/admin/del',
     method: 'post',
     data
@@ -33,6 +40,7 @@ export function deleteAdmin(data) {
 
 export function getStatistics() {
   return request({
+    headers: { 'token': token },
     url: '/admin/statistics',
     method: 'get'
   })
@@ -40,6 +48,7 @@ export function getStatistics() {
 
 export function getDays(param) {
   return request({
+    headers: { 'token': token },
     url: '/admin/index/' + param,
     method: 'get'
   })

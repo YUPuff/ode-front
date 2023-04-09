@@ -1,4 +1,7 @@
 import request from '@/utils/request'
+import { getToken } from '@/utils/auth'
+
+const token = getToken()
 
 export function login(data) {
   return request({
@@ -26,6 +29,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
+    headers: { 'token': token },
     url: '/admin/logout',
     method: 'post'
   })
