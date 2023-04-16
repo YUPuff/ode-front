@@ -170,7 +170,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/order/list',
     name: 'Dishes',
-    meta: { role: ['admin', 'waiter'] },
+    meta: { title: '订单管理', role: ['admin', 'waiter'] },
     // 当children数大于1时，自动变为嵌套模式
     children: [
       {

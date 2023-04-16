@@ -15,7 +15,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-if="role === 0" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -46,13 +46,6 @@
       <el-table-column label="简介">
         <template slot-scope="scope">
           {{ scope.row.intro }}
-        </template>
-      </el-table-column>
-      <el-table-column label="评价">
-        <template slot-scope="scope">
-          <el-tag type="success" style="margin-right: 30px;">好：{{ scope.row.comments['good'] }}</el-tag>
-          <el-tag type="info" style="margin-right: 30px;">中：{{ scope.row.comments['mid'] }}</el-tag>
-          <el-tag type="danger">差：{{ scope.row.comments['bad'] }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -101,6 +94,11 @@
         </el-form-item>
         <el-form-item label="详细介绍" prop="name">
           {{temp.detail}}
+        </el-form-item>
+        <el-form-item label="评价情况">
+          <el-tag type="success" style="margin-right: 30px;font-size: large;">好：{{ temp.good }}</el-tag>
+          <el-tag type="info" style="margin-right: 30px;font-size: large;">中：{{ temp.mid }}</el-tag>
+          <el-tag type="danger" style="font-size: large;">差：{{ temp.bad }}</el-tag>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -172,6 +170,9 @@ export default {
     seeDetail(id) {
       getDishById(id).then(response => {
         this.temp = response.data
+        this.temp.good = this.temp.comments.good
+        this.temp.mid = this.temp.comments.mid
+        this.temp.bad = this.temp.comments.bad
         this.dialogFormVisible = true
       })
     },
@@ -186,6 +187,7 @@ export default {
       this.deleteId = []
       this.deleteId.push(id)
       this.dialogVisible = true
+      console.log(this.deleteId)
     },
     handleDelete2() {
       deleteDish(this.deleteId).then(response => {
