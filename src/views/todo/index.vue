@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <WebSocket style="display: none;" v-on:IsRefresh="IsRefresh"></WebSocket>
     <el-row :gutter="20" style="margin-bottom: 40px;display: flex;">
       <el-col :span="8" style="margin: 15px;">
         <el-card>
@@ -29,7 +30,7 @@
                 {{ scope.row.amount }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column v-if="role != 1" label="操作" align="center" class-name="small-padding fixed-width">
               <template slot-scope="scope">
                 <el-button type="danger" size="mini" @click="updateStatus(scope.row.id)">
                   烹饪
@@ -39,7 +40,7 @@
           </el-table>
         </el-card>
       </el-col>
-      <el-col :span="8" style="margin: 20px;">
+      <el-col :span="8" style="margin: 15px;">
         <el-card>
           <div class="title" style="color:#E6A23C">烹饪中</div>
           <!--列表-->
@@ -67,17 +68,17 @@
                 {{ scope.row.amount }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column v-if="role != 1" label="操作" align="center" class-name="small-padding fixed-width">
               <template slot-scope="scope">
                 <el-button type="warning" size="mini" @click="updateStatus(scope.row.id)">
-                  烹饪结束
+                  结束
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-card>
       </el-col>
-      <el-col :span="8" style="margin: 20px;">
+      <el-col :span="8" style="margin: 15px;">
         <el-card>
           <div class="title" style="color:#409EFF">待上菜</div>
           <!--列表-->
@@ -105,7 +106,7 @@
                 {{ scope.row.amount }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column v-if="role != 2" label="操作" align="center" class-name="small-padding fixed-width">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="updateStatus(scope.row.id)">
                   上菜
@@ -120,8 +121,18 @@
 </template>
 <script>
 import { getToDoDish, updateDishStatus } from '@/api/dish'
+import { mapGetters } from 'vuex'
+import WebSocket from '@/components/WebSocket'
 
 export default {
+  components: {
+    WebSocket
+  },
+  computed: {
+    ...mapGetters([
+      'role'
+    ])
+  },
   filters: {
     statusTypeFilter(status) {
       const statusMap = {
@@ -156,6 +167,21 @@ export default {
     this.initData()
   },
   methods: {
+    IsRefresh(e) {
+      var that = this
+      if (e === 'new_order') {
+        this.$message({
+          message: '您有新的订单！'
+        })
+      } else if (e === 'cancel') {
+        this.$message({
+          message: '有菜品被取消！'
+        })
+      }
+      setTimeout(function() {
+        that.initData()
+      }, 2000)
+    },
     initData() {
       this.listLoading = true
       getToDoDish().then(res => {

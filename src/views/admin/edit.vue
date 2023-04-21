@@ -93,8 +93,7 @@ export default {
     // 图片上传成功的操作
     handleAvatarSuccess(res, file) {
       if (res.code === 20000) {
-        this.form.pic = URL.createObjectURL(file.raw)
-        this.picURL = res.data
+        this.form.pic = res.data
       } else {
         this.$message.error(res.message)
       }

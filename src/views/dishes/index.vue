@@ -187,7 +187,6 @@ export default {
       this.deleteId = []
       this.deleteId.push(id)
       this.dialogVisible = true
-      console.log(this.deleteId)
     },
     handleDelete2() {
       deleteDish(this.deleteId).then(response => {

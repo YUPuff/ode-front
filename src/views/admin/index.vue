@@ -146,7 +146,7 @@ export default {
         name: null,
         role: null,
         isLock: null,
-        isVal: 0,
+        isVal: null,
         pageNum: 1,
         pageSize: 10
       },

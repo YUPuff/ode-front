@@ -73,7 +73,6 @@ export default {
   methods: {
     onSubmit() {
       var isNumber = this.form.price === '' || (!isNaN(parseFloat(this.form.price)) && isFinite(this.form.price))
-      console.log(isNumber)
       if (isNumber) {
         updateDish(this.form).then(response => {
           this.$message({

@@ -174,8 +174,7 @@ export default {
         this.list = res.data
       })
     },
-    collopseChanged(){
-      console.log("he")
+    collopseChanged() {
     }
   }
 }
