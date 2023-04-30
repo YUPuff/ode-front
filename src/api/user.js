@@ -19,6 +19,13 @@ export function signup(data) {
   })
 }
 
+export function getKeys() {
+  return request({
+    url: '/admin/getKeys',
+    method: 'get'
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/admin/info',

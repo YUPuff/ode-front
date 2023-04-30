@@ -48,7 +48,8 @@
 </template>
 
 <script>
-import { signup } from '@/api/user'
+import { signup, getKeys } from '@/api/user'
+import { JSEncrypt } from 'jsencrypt'
 
 export default {
   name: 'Login',
@@ -56,18 +57,23 @@ export default {
     return {
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        uuid: ''
       },
       loading: false,
       passwordType: 'password',
       redirect: undefined,
       rules: {
-        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+        username: [
+          { required: true, message: '用户名不能为空', trigger: 'blur' },
+          { max: 30, message: '用户名长度不能超过30位', trigger: 'blur' }],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
-          { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+          { min: 6, message: '密码长度不能少于6位', trigger: 'blur' },
+          { max: 30, message: '密码长度不能超过30位', trigger: 'blur' }
         ]
-      }
+      },
+      publicStr: ''
     }
   },
   watch: {
@@ -78,7 +84,17 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.get()
+  },
   methods: {
+    get() {
+      getKeys().then(res => {
+        const map = res.data
+        this.loginForm.uuid = map['uuid']
+        this.publicStr = map['publicKey']
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -93,6 +109,13 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          const pass = this.loginForm.password
+          // 新建JSEncrypt对象
+          const encryptor = new JSEncrypt()
+          // 设置公钥
+          encryptor.setPublicKey(this.publicStr)
+          // 加密数据
+          this.loginForm.password = encryptor.encrypt(pass)
           signup(this.loginForm).then(() => {
             this.$message.success('注册成功，等待管理员审核！')
             this.$router.push('/login')

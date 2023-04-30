@@ -39,10 +39,10 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, uuid } = userInfo
     return new Promise((resolve, reject) => {
       // 调用api/user中的login方法，不是递归
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, uuid: uuid }).then(response => {
         const { data } = response
         commit('SET_ID', data.id)
         commit('SET_TOKEN', data.token)
